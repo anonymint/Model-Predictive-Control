@@ -91,6 +91,18 @@ int main() {
           double py = j[1]["y"];
           double psi = j[1]["psi"];
           double v = j[1]["speed"];
+          double steering_value = j[1]["steering_angle"];
+          double throttle_value = j[1]["throttle"];
+
+          //since steering_value for simulator delta positive means turn left so multiply -1 to keep same equation
+          steering_value = -steering_value;
+          // incorporate latency
+          double Lf = 2.67;
+          double latency = 0.1;
+          px += v * latency * cos(psi);
+          py += v * latency * sin(psi);
+          psi += v * steering_value / Lf * latency;
+          v += throttle_value * latency;
 
           for (int i=0; i < ptsx.size(); i++) {
             //shift car reference angle to 90 degree
@@ -113,9 +125,6 @@ int main() {
           double cte = polyeval(coeffs, 0);
           //NOTE epsi = psi - atan(coeffs[1] + 2*px*coeffs[2] + 3*px^2*coeffs[3]); x = 0 and psi = 0 degree
           double epsi = -atan(coeffs[1]);
-
-          double steering_value = j[1]["steering_angle"];
-          double throttle_value = j[1]["throttle"];
 
           Eigen::VectorXd state(6);
           state << 0,0,0,v,cte,epsi;
