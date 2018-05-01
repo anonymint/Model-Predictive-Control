@@ -82,11 +82,9 @@ Turn off `cout` printing log is slowing down the process, a program in general i
 Driving around the lap with 40 mph
 
 ![part_1](asset/part_1.gif)
-
 ![part_2](asset/part_2.gif)
 
 ![part_3](asset/part_3.gif)
-
 ![part_4](asset/part_4.gif)
 
 For the video of full track you can see it from [here](asset/full_lap.mp4)
