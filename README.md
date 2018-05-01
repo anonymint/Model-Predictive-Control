@@ -41,6 +41,9 @@ Drive a simulation car around a track with MPC
 ## Implementation
 
 * Transform input waypoint to another coordinate at (0,0) and angle 0 degrees, this will help to map and visualize data more simple and track only y coordinate
+
+Input data is `[ptsx, ptsy, x, y, psi, speed, steering_angle, throttle]` where ptsx and ptsy are the coordinate of the waypoint
+
 * Add latency of 100 milliseconds to the input to reflect real-world control
 * Fit the waypoint to 3rd order equation so we have `coeffs` value represent a yellow line I want to track on
 * Build `fg` of ADvector, a vector of the cost constraints
@@ -48,8 +51,8 @@ Drive a simulation car around a track with MPC
 * Feeding x,y to visualize the green line tracking the waypoint yellow line
 * Feeding steering and throttle values to the simulator to drive a car
 * Last but not least adjust hyperparameters
-  * `N` number of step ahead to calculate
-  * `dt` time step for each `N`
+  * `N` number of step ahead to calculate; I pick 10 after trial and error, 10 seems to gave the best result
+  * `dt` time step for each `N`; I pick 0.15 sec which 10*0.15 = 1.5 seconds ahead of time 
   * ratio of each cost functions I want to optimize on at the end I want to minimize the cost to as minimal as possible
   ```
       // 200 is a multiplier to signal that I want to penalize the cte and the reference compare to v_start(throttle)      
