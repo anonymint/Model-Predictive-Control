@@ -51,8 +51,8 @@ class FG_eval {
 
     // Reference State Cost
     for (int i=0; i< N; i++) {
-      fg[0] += 1000 * CppAD::pow(vars[cte_start + i] - ref_cte,2);
-      fg[0] += 1000 * CppAD::pow(vars[epsi_start + i] - ref_epsi,2);
+      fg[0] += 200 * CppAD::pow(vars[cte_start + i] - ref_cte,2);
+      fg[0] += 200 * CppAD::pow(vars[epsi_start + i] - ref_epsi,2);
       fg[0] += CppAD::pow(vars[v_start + i] - ref_v,2);
     }
 
@@ -64,7 +64,7 @@ class FG_eval {
 
     // Minimize the value gap between sequential actuations.
     for (int t = 0; t < N - 2; t++) {
-      fg[0] += 500*CppAD::pow(vars[delta_start + t + 1] - vars[delta_start + t], 2);
+      fg[0] += 200*CppAD::pow(vars[delta_start + t + 1] - vars[delta_start + t], 2);
       fg[0] += 10*CppAD::pow(vars[a_start + t + 1] - vars[a_start + t], 2);
     }
 

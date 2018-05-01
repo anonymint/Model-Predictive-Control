@@ -93,15 +93,14 @@ int main() {
           double v = j[1]["speed"];
           double steering_value = j[1]["steering_angle"];
           double throttle_value = j[1]["throttle"];
-
-          //since steering_value for simulator delta positive means turn left so multiply -1 to keep same equation
-          steering_value = -steering_value;
+          
           // incorporate latency
           double Lf = 2.67;
           double latency = 0.1;
           px += v * latency * cos(psi);
           py += v * latency * sin(psi);
-          psi += v * steering_value / Lf * latency;
+          //since steering_value for simulator delta positive means turn left so multiply -1 to keep same equation
+          psi += v * (-steering_value) / Lf * latency;
           v += throttle_value * latency;
 
           for (int i=0; i < ptsx.size(); i++) {
