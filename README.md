@@ -37,3 +37,48 @@ Drive a simulation car around a track with MPC
 2. Make a build directory: `mkdir build && cd build`
 3. Compile: `cmake .. && make`
 4. Run it: `./mpc`.
+
+## Implementation
+
+* Transform input waypoint to another coordinate at (0,0) and angle 0 degrees, this will help to map and visualize data more simple and track only y coordinate
+* Add latency of 100 milliseconds to the input to reflect real-world control
+* Fit the waypoint to 3rd order equation so we have `coeffs` value represent a yellow line I want to track on
+* Build `fg` of ADvector, a vector of the cost constraints
+* Let [Ipopt](https://projects.coin-or.org/Ipopt/) to find locally optimal values of x,y,cte, epsi, delta(steering) and a(throttle)
+* Feeding x,y to visualize the green line tracking the waypoint yellow line
+* Feeding steering and throttle values to the simulator to drive a car
+* Last but not least adjust hyperparameters
+  * `N` number of step ahead to calculate
+  * `dt` time step for each `N`
+  * ratio of each cost functions I want to optimize on at the end I want to minimize the cost to as minimal as possible
+  ```
+      // 200 is a multiplier to signal that I want to penalize the cte and the reference compare to v_start(throttle)      
+      fg[0] += 200 * CppAD::pow(vars[cte_start + i] - ref_cte,2);
+      fg[0] += 200 * CppAD::pow(vars[epsi_start + i] - ref_epsi,2);
+      fg[0] += CppAD::pow(vars[v_start + i] - ref_v,2);
+  ```
+
+## Personal Tips  
+
+Adjust options for IPOPT solver, otherwise, you will spend hours to debug your code and turn out because I don't give much time for IPOPT to use CPU for calculation
+```
+
+// before it set to 0.5 sec which not enough for certain slow PC like mine :)
+options += "Numeric max_cpu_time          50\n";
+```
+
+Turn off `cout` printing log is slowing down the process, a program in general if you want to optimize for an optimal solution not debugging, turning it off.
+
+## Result
+
+Driving around the lap with 40 mph
+
+![part_1](asset/part_1.gif)
+
+![part_2](asset/part_2.gif)
+
+![part_3](asset/part_3.gif)
+
+![part_4](asset/part_4.gif)
+
+For the video of full track you can see it from [here](asset/full_lap.mp4)
