@@ -42,10 +42,15 @@ Drive a simulation car around a track with MPC
 
 * Transform input waypoint to another coordinate at (0,0) and angle 0 degrees, this will help to map and visualize data more simple and track only y coordinate
 
-Input data is `[ptsx, ptsy, x, y, psi, speed, steering_angle, throttle]` where ptsx and ptsy are the coordinate of the waypoint
+  Input data is `[ptsx, ptsy, x, y, psi, speed, steering_angle, throttle]` where ptsx and ptsy are the coordinate of the waypoint
 
 * Add latency of 100 milliseconds to the input to reflect real-world control
 * Fit the waypoint to 3rd order equation so we have `coeffs` value represent a yellow line I want to track on
+* Building state model 
+
+  the state is x,y,psi,speed,cte,epsi
+  `state << 0,0,0,v,cte,epsi` because we transfer coordinate to (0,0) origin and angle 0 degree
+
 * Build `fg` of ADvector, a vector of the cost constraints
 * Let [Ipopt](https://projects.coin-or.org/Ipopt/) to find locally optimal values of x,y,cte, epsi, delta(steering) and a(throttle)
 * Feeding x,y to visualize the green line tracking the waypoint yellow line
