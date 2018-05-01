@@ -126,15 +126,9 @@ int main() {
           double epsi = -atan(coeffs[1]);
 
           Eigen::VectorXd state(6);
-          state << 0,0,0,v,cte,epsi;
+          state << 0,0,0,v,cte,epsi;      
 
-          /*
-          * TODO: Calculate steering angle and throttle using MPC.
-          *
-          * Both are in between [-1, 1].
-          *
-          */          
-
+          // MPC Solve which take a state and coeffs vector(we build from waypoint)
           auto vars = mpc.Solve(state, coeffs);
 
           // starting building visualization of our line next 25 points ahead  
